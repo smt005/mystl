@@ -75,6 +75,22 @@ namespace mystl {
 			std::swap(_capacity, str._capacity);
 		}
 
+		size_t size() const noexcept {
+			return _size;
+		}
+
+		bool empty() const noexcept {
+			return _size == 0;
+		}
+
+		T& operator[](const size_t index) noexcept {
+			return _data[index];
+		}
+
+		const T& operator[](const size_t index) const noexcept {
+			return _data[index];
+		}
+
 		string_base& operator = (const string_base& str) {
 			Log("operator = (const string_base &): " + (str._data ? std::string(str._data) : "EMPTY"));
 
@@ -184,7 +200,7 @@ namespace mystl {
 		size_t _capacity;
 
 	private:
-		bool _enableLog = true;
+		bool _enableLog = false;
 
 		void Log(const std::string& text) {
 			if (_enableLog) {
