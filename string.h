@@ -2,8 +2,10 @@
 
 #include <algorithm>
 #include <ostream>
-#include <string>
 #include <cstdint>
+
+// ¬–≈Ã≈ÕÕŒ => œŒ—“ŒﬂÕÕŒ
+#include <string>
 
 namespace mystd {
 	template <typename T>
@@ -128,7 +130,7 @@ namespace mystd {
 		}
 
 		string_base(string_base&& str) noexcept {
-			Log("string_base(string_base &&): " + str);
+			Log("string_base(string_base &&): " + std::string(str._data));
 
 			std::swap(_data, str._data);
 			std::swap(_size, str._size);
@@ -136,6 +138,10 @@ namespace mystd {
 		}
 
 		size_t size() const noexcept {
+			return _size;
+		}
+
+		size_t length() const noexcept {
 			return _size;
 		}
 
@@ -236,6 +242,38 @@ namespace mystd {
 			}
 
 			return *this;
+		}
+
+		T* data() {
+			return _data;
+		}
+
+		bool operator == (const string_base& str) const {
+			if (_size != str._size) {
+				return false;
+			}
+
+			for (size_t index = 0; index < _size; ++index) {
+				if (_data[index] != str._data[index]) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		bool operator != (const string_base& str) const {
+			if (_size == str._size) {
+				return false;
+			}
+
+			for (size_t index = 0; index < _size; ++index) {
+				if (_data[index] != str._data[index]) {
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		friend
