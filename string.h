@@ -5,7 +5,7 @@
 #include <string>
 #include <cstdint>
 
-namespace mystl {
+namespace mystd {
 	template <typename T>
 	class string_base final {
 	public:
