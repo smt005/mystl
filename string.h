@@ -7,8 +7,68 @@
 
 namespace mystd {
 	template <typename T>
+	class string_iterator {
+	public:
+		string_iterator(T* ptr) : _ptr(ptr) {
+		}
+
+		string_iterator(const string_iterator& it) : _ptr(it._ptr) {
+		}
+
+		string_iterator(string_iterator&& it) : noexcept {
+			std::swap(_ptr, it._ptr);
+		}
+
+		string_iterator& operator = (const string_iterator& it) {
+			_ptr = it._ptr;
+		}
+
+		string_iterator& operator = (string_iterator&& it) {
+			std::swap(_ptr, it._ptr);
+		}
+
+		T& operator * () {
+			return *_ptr;
+		}
+
+		string_iterator& operator ++ () {
+			++_ptr;
+			return *this;
+		}
+
+		string_iterator& operator -- () {
+			--_ptr;
+			return *this;
+		}
+
+		string_iterator& operator ++ (int) {
+			string_iterator temp(*this);
+			++_ptr;
+			return temp;
+		}
+
+		string_iterator& operator -- (int) {
+			string_iterator temp(*this);
+			--_ptr;
+			return temp;
+		}
+
+		bool operator == (const string_iterator& it) const {
+			return _ptr == it._ptr;
+		}
+
+		bool operator != (const string_iterator& it) const {
+			return _ptr != it._ptr;
+		}
+
+	private:
+		T* _ptr;
+	};
+
+	template <typename T>
 	class string_base final {
 	public:
+		using iterator = string_iterator<T>;
 		string_base()
 			: _data(nullptr)
 			, _size(0)
@@ -192,6 +252,14 @@ namespace mystd {
 				out << str._data;
 			}
 			return out;
+		}
+
+		iterator begin() {
+			return iterator(&_data[0]);
+		}
+
+		iterator end() {
+			return iterator(&_data[_size]);
 		}
 
 	private:
